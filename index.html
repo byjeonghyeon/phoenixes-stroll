@@ -2,7 +2,6 @@
 <html lang="ko">
 
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -11,122 +10,84 @@
 <style>
 
 html,body{
-
-margin:0;
-width:100%;
-height:100%;
-
-background:#F8F7F3;
-
-overflow:hidden;
-
-display:flex;
-justify-content:center;
-align-items:center;
-
-font-family:
--apple-system,
-BlinkMacSystemFont,
-"Pretendard",
-sans-serif;
-
+    margin:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#F8F7F3;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-family:-apple-system,BlinkMacSystemFont,"Pretendard",sans-serif;
 }
 
 video{
-
-position:absolute;
-
-top:0;
-left:0;
-
-width:100%;
-height:100%;
-
-object-fit:contain;
-
-z-index:1;
-
-opacity:0;
-
-animation:fade 1s forwards;
-
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    opacity:0;
+    animation:fadeVideo 0.9s ease forwards;
 }
 
-@keyframes fade{
-
-from{opacity:0;}
-
-to{opacity:1;}
-
+@keyframes fadeVideo{
+    from{opacity:0;}
+    to{opacity:1;}
 }
-
-
-/* 작품명 */
-
-#title{
-
-position:fixed;
-
-top:28px;
-
-left:50%;
-
-transform:translateX(-50%);
-
-z-index:9999;
-
-font-size:20px;
-
-font-weight:500;
-
-letter-spacing:.08em;
-
-color:#555;
-
-}
-
-
-/* 음악 안내 */
 
 #guide{
 
-position:fixed;
+    position:fixed;
 
-bottom:14px;
+    left:50%;
+    bottom:18px;
 
-left:50%;
+    transform:translateX(-50%);
 
-transform:translateX(-50%);
+    font-size:12px;
 
-padding:6px 12px;
+    letter-spacing:.03em;
 
-border-radius:999px;
+    color:rgba(70,70,70,.68);
 
-background:rgba(255,255,255,.78);
+    opacity:0;
 
-backdrop-filter:blur(6px);
+    transition:opacity 1.2s ease;
 
-font-size:9px;
+    white-space:nowrap;
 
-letter-spacing:.03em;
+    user-select:none;
 
-color:#777;
+    pointer-events:none;
 
-box-shadow:0 4px 12px rgba(0,0,0,.08);
-
-z-index:9999;
-
-transition:opacity .6s;
-
-white-space:nowrap;
+    z-index:100;
 
 }
 
-.hide{
+.show{
 
-opacity:0;
+    opacity:1;
 
-pointer-events:none;
+}
+
+#signature{
+
+    position:fixed;
+
+    right:20px;
+
+    bottom:18px;
+
+    font-size:10px;
+
+    color:rgba(90,90,90,.45);
+
+    letter-spacing:.08em;
+
+    user-select:none;
+
+    z-index:100;
 
 }
 
@@ -136,27 +97,24 @@ pointer-events:none;
 
 <body>
 
-<div id="title">
-
-봉황들의 산책
-
-</div>
-
 <video
 id="video"
 autoplay
 muted
 loop
-playsinline>
+playsinline
+webkit-playsinline>
 
 <source src="phoenixes-stroll.mp4" type="video/mp4">
 
 </video>
 
 <div id="guide">
+♪ 화면을 터치해 음악과 함께 감상해 보세요.
+</div>
 
-♪ 화면을 터치하면 음악이 시작됩니다.
-
+<div id="signature">
+Jeonghyeon
 </div>
 
 <script>
@@ -166,37 +124,54 @@ const guide=document.getElementById("guide");
 
 let activated=false;
 
+// 영상 시작 후 2초 뒤 안내문 표시
+setTimeout(()=>{
+
+    if(!activated){
+
+        guide.classList.add("show");
+
+    }
+
+},2000);
+
+// 7초 뒤 안내문 숨김
+setTimeout(()=>{
+
+    guide.classList.remove("show");
+
+},7000);
+
 function enableAudio(){
 
-if(activated) return;
+    if(activated) return;
 
-activated=true;
+    activated=true;
 
-guide.classList.add("hide");
+    guide.classList.remove("show");
 
-video.muted=false;
+    video.muted=false;
 
-video.volume=0;
+    video.volume=0;
 
-video.play();
+    video.play();
 
-let volume=0;
+    let volume=0;
 
-const fade=setInterval(()=>{
+    const fade=setInterval(()=>{
 
-volume+=0.05;
+        volume+=0.05;
 
-if(volume>=1){
+        if(volume>=1){
 
-volume=1;
+            volume=1;
+            clearInterval(fade);
 
-clearInterval(fade);
+        }
 
-}
+        video.volume=volume;
 
-video.volume=volume;
-
-},50);
+    },50);
 
 }
 
