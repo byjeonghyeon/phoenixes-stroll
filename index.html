@@ -10,41 +10,53 @@
 
 <style>
 
-html, body{
-    margin:0;
-    width:100%;
-    height:100%;
-    overflow:hidden;
-    background:#F8F7F3;
-}
-
+html,
 body{
-    display:flex;
-    justify-content:center;
-    align-items:center;
+
+margin:0;
+width:100%;
+height:100%;
+overflow:hidden;
+background:#F8F7F3;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
 }
 
 video{
 
-    width:100%;
-    height:100%;
+position:absolute;
 
-    object-fit:contain;
+top:0;
+left:0;
 
-    opacity:0;
+width:100%;
+height:100%;
 
-    animation:fadein .9s ease forwards;
+object-fit:contain;
+
+z-index:1;
+
+opacity:0;
+
+animation:fade 1s forwards;
 
 }
 
-@keyframes fadein{
+@keyframes fade{
 
 from{
+
 opacity:0;
+
 }
 
 to{
+
 opacity:1;
+
 }
 
 }
@@ -53,27 +65,30 @@ opacity:1;
 
 position:fixed;
 
-bottom:28px;
-
 left:50%;
+bottom:28px;
 
 transform:translateX(-50%);
 
 padding:10px 18px;
 
-background:rgba(255,255,255,.78);
+background:rgba(255,255,255,.82);
 
-border-radius:30px;
+border-radius:999px;
 
 font-size:14px;
 
 color:#666;
 
-backdrop-filter:blur(6px);
-
-transition:opacity .6s;
-
 font-family:-apple-system,BlinkMacSystemFont,Pretendard,sans-serif;
+
+z-index:9999;
+
+box-shadow:0 6px 20px rgba(0,0,0,.08);
+
+transition:opacity .5s;
+
+white-space:nowrap;
 
 }
 
@@ -96,15 +111,16 @@ id="video"
 autoplay
 muted
 loop
-playsinline
-webkit-playsinline>
+playsinline>
 
 <source src="phoenixes-stroll.mp4" type="video/mp4">
 
 </video>
 
 <div id="guide">
-♪ 화면을 한 번 터치하면 음악과 함께 감상하실 수 있습니다.
+
+🎵 화면을 한 번 터치하면 음악이 시작됩니다.
+
 </div>
 
 <script>
@@ -112,35 +128,37 @@ webkit-playsinline>
 const video=document.getElementById("video");
 const guide=document.getElementById("guide");
 
-let activated=false;
+let started=false;
 
 function enableAudio(){
 
-if(activated) return;
+if(started) return;
 
-activated=true;
+started=true;
+
+guide.classList.add("hide");
 
 video.muted=false;
 
 video.volume=0;
 
-guide.classList.add("hide");
+video.play();
 
 let v=0;
 
-const fade=setInterval(()=>{
+const timer=setInterval(()=>{
 
 v+=0.05;
 
-video.volume=v;
-
 if(v>=1){
 
-video.volume=1;
+v=1;
 
-clearInterval(fade);
+clearInterval(timer);
 
 }
+
+video.volume=v;
 
 },50);
 
