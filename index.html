@@ -9,39 +9,39 @@
 
 <style>
 
-/* 전체 화면 배경 */
 html,body{
     margin:0;
+    padding:0;
     width:100%;
     height:100%;
     overflow:hidden;
-    background:#F8F7F3; /* 원래 배경색 유지 */
+    background:#F8F7F3;
     display:flex;
+    flex-direction: column; /* 요소를 세로로 배치 */
     justify-content:center;
     align-items:center;
     font-family:-apple-system,BlinkMacSystemFont,"Pretendard",sans-serif;
 }
 
-/* 비디오 영역 (컨테이너) */
+/* 비디오가 화면 대부분을 차지하되, 하단 여백을 확보 */
 #container {
     position: relative;
     width: 100%;
-    height: 100%;
+    flex: 1; /* 하단 텍스트 영역을 제외한 나머지 공간을 꽉 채움 */
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
 }
 
-/* 비디오 자체 */
 video{
     position:absolute;
     inset:0;
     width:100%;
     height:100%;
-    object-fit:contain; /* 영상 비율 유지 */
+    object-fit:contain;
     opacity:0;
-    z-index: 1; /* 가장 아래 레이어 */
+    z-index: 1;
     animation:fadeVideo 0.9s ease forwards;
 }
 
@@ -50,49 +50,50 @@ video{
     to{opacity:1;}
 }
 
-/* 안내문 - 밝은 색으로 변경 및 비디오 내부 위치 */
-#guide{
-    position:absolute;
-    left:50%;
-    bottom:12%; /* 하단 12% 지점에 위치 */
-    transform:translateX(-50%);
-    font-size:14px; /* 글씨 크기 약간 확대 */
-    font-weight: 500;
-    letter-spacing:.03em;
-    
-    /* 어두운 배경에서 잘 보이도록 밝은 아이보리색으로 변경 */
-    color:#FDFCF5; 
-    
-    /* 글씨 주변에 은은한 어두운 그림자를 주어 가독성 확보 */
-    text-shadow: 0 1px 4px rgba(0,0,0,0.3);
-    
-    opacity:0;
-    transition:opacity 0.8s ease; /* 페이드 시간 단축 */
-    white-space:nowrap;
-    user-select:none;
-    pointer-events:none;
-    z-index:100; /* video(1)보다 무조건 위에 위치 */
+/* 화면 맨 최하단에 텍스트들을 고정하는 영역 */
+#bottom-bar {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 40px; /* 하단 영역 높이 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    z-index: 100;
+    pointer-events: none;
 }
 
-/* 안내문 나타날 때 */
+/* 안내문 - 어두운 회색으로 변경 및 최하단 정중앙 배치 */
+#guide{
+    font-size:12px;
+    letter-spacing:.03em;
+    
+    /* 눈에 잘 띄는 어두운 회색으로 변경 */
+    color: #4A4A4A; 
+    
+    opacity:0;
+    transition:opacity 0.8s ease;
+    white-space:nowrap;
+    user-select:none;
+}
+
 #guide.show{
     opacity:1 !important;
 }
 
-/* 시그니처 텍스트 - 밝은 색으로 변경 및 우하단 고정 */
+/* 시그니처 - 최하단 우측 끝에 확실하게 고정 */
 #signature{
-    position:absolute;
-    right:20px;
-    bottom:18px;
-    font-size:11px;
+    position: absolute;
+    right: 20px;
+    font-size:10px;
     
-    /* 어두운 배경에서 잘 보이도록 밝은 회색으로 변경 */
-    color:rgba(255,255,255,0.7); 
+    /* 은은하게 보이는 어두운 회색 */
+    color: rgba(74, 74, 74, 0.55); 
     
-    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
     letter-spacing:.08em;
     user-select:none;
-    z-index:100; /* video(1)보다 무조건 위에 위치 */
 }
 
 </style>
@@ -102,28 +103,27 @@ video{
 <body>
 
 <div id="container">
-
-<video
-id="video"
-autoplay
-muted
-loop
-playsinline
-webkit-playsinline>
-
-<source src="phoenixes-stroll.mp4" type="video/mp4">
-
-</video>
-
-<div id="guide">
-♪ 화면을 터치해 음악과 함께 감상해 보세요.
+    <video
+    id="video"
+    autoplay
+    muted
+    loop
+    playsinline
+    webkit-playsinline>
+    <source src="phoenixes-stroll.mp4" type="video/mp4">
+    </video>
 </div>
 
-<div id="signature">
-Jeonghyeon
+<div id="bottom-bar">
+    <div id="guide">
+    ♪ 화면을 터치해 음악과 함께 감상해 보세요.
+    </div>
+    <div id="signature">
+    Jeonghyeon
+    </div>
 </div>
 
-</div> <script>
+<script>
 
 const video=document.getElementById("video");
 const guide=document.getElementById("guide");
