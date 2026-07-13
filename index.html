@@ -47,27 +47,31 @@ video{
     to{opacity:1;}
 }
 
+/* 
+   텍스트 바 자체를 화면 중앙에 배치합니다.
+   너비를 100%로 채우지 않고 컨텐츠 크기에 맞춤으로써 화면 밖 탈출을 막습니다.
+*/
 #text-overlay-bar {
     position: absolute;
-    left: 0;
+    left: 50%;
+    transform: translateX(-50%); /* 화면 가로축 기준 완벽한 정중앙 고정 */
     bottom: 25px; 
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr auto 1fr; 
+    display: flex;
+    flex-direction: row; /* 무조건 한 줄 유지 */
     align-items: center;
+    justify-content: center;
+    white-space: nowrap;
     z-index: 10;
     pointer-events: none;
 }
 
-/* 안내문 - 정중앙 유지 */
+/* 안내문 */
 #guide{
-    grid-column: 2;
     font-size:12px;
     letter-spacing:.03em;
     color: #4A4A4A; 
     opacity:0;
     transition:opacity 0.8s ease;
-    white-space:nowrap;
     user-select:none;
 }
 
@@ -75,10 +79,8 @@ video{
     opacity:1 !important;
 }
 
-/* 시그니처 - 원래 텍스트 크기에 맞춰 안정적인 30px 여백 적용 */
+/* 시그니처 - 한 줄 안에서 안내문 오른쪽에 30px 간격을 두고 안착 */
 #signature{
-    grid-column: 3;
-    justify-self: start; 
     margin-left: 30px;   
     font-size:10px;
     color: rgba(74, 74, 74, 0.55); 
@@ -105,8 +107,7 @@ video{
     </video>
 
     <div id="text-overlay-bar">
-        <div></div> 
-        
+        <!-- 가로 한 줄로 나란히 배치 -->
         <div id="guide">
         ♪ 화면을 터치해 음악과 함께 감상해 보세요.
         </div>
