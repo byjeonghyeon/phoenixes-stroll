@@ -22,7 +22,6 @@ html,body{
     font-family:-apple-system,BlinkMacSystemFont,"Pretendard",sans-serif;
 }
 
-/* 비디오와 텍스트를 하나로 묶는 절대적 기준점 */
 #video-wrapper {
     position: relative;
     width: 100%;
@@ -37,7 +36,7 @@ video{
     inset:0;
     width:100%;
     height:100%;
-    object-fit:contain; /* 영상 비율 유지 및 검은 띠 생성 */
+    object-fit:contain;
     opacity:0;
     z-index: 1;
     animation:fadeVideo 0.9s ease forwards;
@@ -48,24 +47,24 @@ video{
     to{opacity:1;}
 }
 
-/* 
-   영상의 실제 하단(검은 띠 부분) 위에 텍스트를 띄우기 위한 박스
-   비디오 레이어(z-index: 1)보다 무조건 위에 오도록 설정
+/* 텍스트 레이아웃 구조 변경:
+   안내문은 정중앙을 유지하고, 시그니처는 우측으로 치우치게 균형을 잡습니다.
 */
 #text-overlay-bar {
     position: absolute;
     left: 0;
-    bottom: 25px; /* 검은 띠 하단에서 약간 위로 띄움 (원하는 높이로 조절 가능) */
+    bottom: 25px; /* 검은 띠 안에서의 높이 (원하는 대로 조절 가능) */
     width: 100%;
-    display: flex;
-    justify-content: center; /* 가로 정중앙 정렬 */
+    display: grid;
+    grid-template-columns: 1fr auto 1fr; /* 좌우 균등 여백을 만들어 중앙 정렬 보장 */
     align-items: center;
-    z-index: 10; /* 비디오보다 위에 배치 */
+    z-index: 10;
     pointer-events: none;
 }
 
-/* 안내문 - 어두운 회색 */
+/* 안내문 - 두 번째 열에 위치하여 항상 전체 화면의 완벽한 정중앙 고정 */
 #guide{
+    grid-column: 2;
     font-size:12px;
     letter-spacing:.03em;
     color: #4A4A4A; 
@@ -79,12 +78,13 @@ video{
     opacity:1 !important;
 }
 
-/* 
-   시그니처 - 안내문 우측에 일정한 간격을 두고 자연스럽게 배치 
-   절대 좌표(absolute)로 찢어놓지 않고 구조적으로 묶어 누락 방지
+/* 시그니처 - 세 번째 열 내부로 배치하여 안내문 우측 공간으로 밀어냄
+   margin-left를 조절하여 원하는 만큼 오른쪽으로 치우치게 설정 가능
 */
 #signature{
-    margin-left: 25px; /* 안내문과의 간격 */
+    grid-column: 3;
+    justify-self: start; /* 세 번째 영역의 시작점에 배치 */
+    margin-left: 60px;   /* 안내문으로부터 오른쪽으로 치우쳐지는 간격 (더 늘리려면 숫자 상향) */
     font-size:10px;
     color: rgba(74, 74, 74, 0.55); 
     letter-spacing:.08em;
@@ -109,11 +109,13 @@ video{
     <source src="phoenixes-stroll.mp4" type="video/mp4">
     </video>
 
-    <!-- 비디오의 contain 렝더링 영역을 덮는 상위 레이어 바 -->
     <div id="text-overlay-bar">
+        <div></div> 
+        
         <div id="guide">
         ♪ 화면을 터치해 음악과 함께 감상해 보세요.
         </div>
+        
         <div id="signature">
         Jeonghyeon
         </div>
