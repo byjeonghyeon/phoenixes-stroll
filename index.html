@@ -47,22 +47,19 @@ video{
     to{opacity:1;}
 }
 
-/* 텍스트 레이아웃 구조 변경:
-   안내문은 정중앙을 유지하고, 시그니처는 우측으로 치우치게 균형을 잡습니다.
-*/
 #text-overlay-bar {
     position: absolute;
     left: 0;
-    bottom: 25px; /* 검은 띠 안에서의 높이 (원하는 대로 조절 가능) */
+    bottom: 25px; 
     width: 100%;
     display: grid;
-    grid-template-columns: 1fr auto 1fr; /* 좌우 균등 여백을 만들어 중앙 정렬 보장 */
+    grid-template-columns: 1fr auto 1fr; 
     align-items: center;
     z-index: 10;
     pointer-events: none;
 }
 
-/* 안내문 - 두 번째 열에 위치하여 항상 전체 화면의 완벽한 정중앙 고정 */
+/* 안내문 - 정중앙 유지 */
 #guide{
     grid-column: 2;
     font-size:12px;
@@ -78,13 +75,11 @@ video{
     opacity:1 !important;
 }
 
-/* 시그니처 - 세 번째 열 내부로 배치하여 안내문 우측 공간으로 밀어냄
-   margin-left를 조절하여 원하는 만큼 오른쪽으로 치우치게 설정 가능
-*/
+/* 시그니처 - 안내문 우측 여백을 절반으로 조정 */
 #signature{
     grid-column: 3;
-    justify-self: start; /* 세 번째 영역의 시작점에 배치 */
-    margin-left: 60px;   /* 안내문으로부터 오른쪽으로 치우쳐지는 간격 (더 늘리려면 숫자 상향) */
+    justify-self: start; 
+    margin-left: 30px;   /* 기존 60px에서 딱 절반인 30px로 수정 */
     font-size:10px;
     color: rgba(74, 74, 74, 0.55); 
     letter-spacing:.08em;
